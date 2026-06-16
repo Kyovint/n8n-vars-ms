@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: n8n-variables-ms-config
+  namespace: utils
+data:
+  DB_HOST: ikusi-postgres-rw.database-cnpg.svc.cluster.local
+  DB_PORT: "5432"
+  DB_NAME: postgres

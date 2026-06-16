@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n-variables-ms
+  namespace: utils
+  labels:
+    app: n8n-variables-ms
+spec:
+  type: ClusterIP
+  selector:
+    app: n8n-variables-ms
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
