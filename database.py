@@ -22,7 +22,13 @@ def ensure_table_exists(conn, schema: str, table: str) -> None:
         cur.execute(
             sql.SQL(
                 "CREATE TABLE IF NOT EXISTS {}.{} "
-                "(name TEXT PRIMARY KEY, value TEXT NOT NULL)"
+                "(id BIGSERIAL, name TEXT PRIMARY KEY, value TEXT NOT NULL)"
+            ).format(sql.Identifier(schema), sql.Identifier(table))
+        )
+        # Handle tables created before the id column was added
+        cur.execute(
+            sql.SQL(
+                "ALTER TABLE {}.{} ADD COLUMN IF NOT EXISTS id BIGSERIAL"
             ).format(sql.Identifier(schema), sql.Identifier(table))
         )
     conn.commit()
@@ -64,7 +70,7 @@ def get_all_variables(conn, schema: str, table: str) -> list[dict]:
     try:
         with conn.cursor() as cur:
             cur.execute(
-                sql.SQL("SELECT name, value FROM {}.{} ORDER BY name").format(
+                sql.SQL("SELECT name, value FROM {}.{} ORDER BY id").format(
                     sql.Identifier(schema), sql.Identifier(table)
                 )
             )

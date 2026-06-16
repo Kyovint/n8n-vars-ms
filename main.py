@@ -23,8 +23,6 @@ from models import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    conn = get_connection()
-    conn.close()
     yield
 
 
